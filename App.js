@@ -12,7 +12,7 @@ function App({
     { id: 1, name: "hardik" },
     { id: 2, name: "poudel" },
     { id: 3, name: "from" },
-    { id: 4, name: "kalanki" }
+    { id: 4, name: "kalanki" },
   ],
 }) {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -47,28 +47,55 @@ function App({
 
   return (
     <View>
-      <TextInput
-        ref={inputRef}
-        onChangeText={setSearchTerm}
-        value={searchTerm}
-      />
-      <TouchableOpacity onPress={handleClear}>
-        <Text>Clear</Text>
-      </TouchableOpacity>
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleSelect(item)}>
-            <Text>{item.name}</Text>
-            <Text>
-              {selectedItems.some((selected) => selected.id === item.id)
-                ? "Selected"
-                : "Not selected"}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
+      <View style={{ flexDirection: "row", margin: 10 }}>
+        <TextInput
+          ref={inputRef}
+          onChangeText={setSearchTerm}
+          value={searchTerm}
+          style={{ borderWidth: 1, width: 200, height: 25 }}
+        />
+        <TouchableOpacity
+          onPress={handleClear}
+          style={{
+            backgroundColor: "skyblue",
+            paddingHorizontal: 5,
+            justifyContent: "center",
+            borderRadius: 4,
+            marginLeft: 6,
+          }}
+        >
+          <Text>Clear</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{ marginLeft: 30 }}>
+        <FlatList
+          data={filteredData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            const itemSelected = selectedItems.some(
+              (selected) => selected.id === item.id
+            );
+            return (
+              <TouchableOpacity
+                onPress={() => handleSelect(item)}
+                activeOpacity={0.75}
+                style={{
+                  marginTop: 6,
+                  borderWidth: 1,
+                  borderColor: itemSelected ? "orange" : "black",
+                  alignSelf: "flex-start",
+                  alignItems: "center",
+                  width: 100,
+                  borderRadius: itemSelected ? 20 : 4,
+                }}
+              >
+                <Text>{item.name}</Text>
+                <Text>{itemSelected ? "Selected" : "Select"}</Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
     </View>
   );
 }
